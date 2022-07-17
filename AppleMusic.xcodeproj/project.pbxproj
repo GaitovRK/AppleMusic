@@ -68,11 +68,11 @@
 				5C6DDBE32884203B00D4B011 /* AppDelegate.swift */,
 				5C6DDBE52884203B00D4B011 /* SceneDelegate.swift */,
 				5C6DDBE72884203B00D4B011 /* ViewController.swift */,
+				5C68DDA5288438FE00727DC3 /* PlayerViewController.swift */,
 				5C6DDBE92884203B00D4B011 /* Main.storyboard */,
 				5C6DDBEC2884203E00D4B011 /* Assets.xcassets */,
 				5C6DDBEE2884203E00D4B011 /* LaunchScreen.storyboard */,
 				5C6DDBF12884203E00D4B011 /* Info.plist */,
-				5C68DDA5288438FE00727DC3 /* PlayerViewController.swift */,
 			);
 			path = AppleMusic;
 			sourceTree = "<group>";
