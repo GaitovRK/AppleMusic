@@ -11,6 +11,8 @@ import AVFoundation
 class PlayerViewController: UIViewController {
 
     @IBOutlet var playerView: UIView!
+    let playPauseButton = UIButton()
+
     
     let albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
@@ -78,11 +80,11 @@ class PlayerViewController: UIViewController {
                                            width: playerView.frame.size.width - 20,
                                            height: playerView.frame.size.width - 20)
         songNameLabel.frame = CGRect(x: 10,
-                                     y: albumCoverImageView.frame.size.height + 50,
+                                     y: albumCoverImageView.frame.size.height + 20,
                                      width: playerView.frame.size.width - 20,
                                      height: 70)
         artistNameLabel.frame = CGRect(x: 10,
-                                       y: albumCoverImageView.frame.size.height + 80,
+                                       y: albumCoverImageView.frame.size.height + 50,
                                        width: playerView.frame.size.width - 20,
                                        height: 70)
         
@@ -94,7 +96,83 @@ class PlayerViewController: UIViewController {
         playerView.addSubview(songNameLabel)
         playerView.addSubview(artistNameLabel)
         
+        let nextButton = UIButton()
+        let previousButton = UIButton()
         
+        playPauseButton.addTarget(self, action: #selector(didTapPlayPauseButton), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
+        previousButton.addTarget(self, action: #selector(didTapPreviousButton), for: .touchUpInside)
+        
+        playPauseButton.setBackgroundImage(UIImage(systemName: "pause.fill"), for: .normal)
+        nextButton.setBackgroundImage(UIImage(systemName: "forward.fill"), for: .normal)
+        previousButton.setBackgroundImage(UIImage(systemName: "backward.fill"), for: .normal)
+        
+        playPauseButton.tintColor = .black
+        nextButton.tintColor = .black
+        previousButton.tintColor = .black
+        
+        let centerX = (playerView.frame.size.width - 40)/2
+        let buttonSize: CGFloat = 35
+
+        playPauseButton.frame = CGRect(x: centerX,
+                                       y: artistNameLabel.frame.maxY + 40,
+                                       width: buttonSize,
+                                       height: buttonSize)
+        nextButton.frame = CGRect(x: centerX + 60,
+                                  y: artistNameLabel.frame.maxY + 40,
+                                  width: buttonSize,
+                                  height: buttonSize)
+        previousButton.frame = CGRect(x: centerX - 60,
+                                      y: artistNameLabel.frame.maxY + 40,
+                                      width: buttonSize,
+                                      height: buttonSize)
+        
+        playerView.addSubview(playPauseButton)
+        playerView.addSubview(nextButton)
+        playerView.addSubview(previousButton)
+        
+        let slider = UISlider(frame: CGRect(x: 30,
+                                            y: albumCoverImageView.frame.size.height + 120,
+                                            width: playerView.frame.size.width - 60,
+                                            height: 30))
+        playerView.addSubview(slider)
+        slider.addTarget(self, action: #selector(didSlideSlider(_:)), for: .valueChanged)
+    }
+    
+    @objc func didTapPlayPauseButton() {
+        
+        if player?.isPlaying == true {
+            player?.pause()
+            playPauseButton.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
+        } else {
+            player?.play()
+            playPauseButton.setBackgroundImage(UIImage(systemName: "pause.fill"), for: .normal)
+        }
+
+    }
+    
+    @objc func didTapNextButton() {
+        if position == (songs.count - 1) {
+            position = 0
+        } else {
+            position += 1
+        }
+        configure()
+    }
+    
+    @objc func didTapPreviousButton() {
+        if position == 0 {
+            position = (songs.count - 1)
+        } else {
+            position -= 1
+        }
+        configure()
+    }
+    
+    @objc func didSlideSlider(_ slider: UISlider) {
+        let value = slider.value
+        player?.volume = value
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
